@@ -90,12 +90,24 @@ setInterval(function() {
 
 
         if (latestDataStr.ads && dataStr.ads && (latestDataArr.indexOf(dataStr.ads[0]) === -1)) {
-            // let matchKeyWord = /((H|h)(D|d)\s?6(0|5)0)/g;
-            let matchKeyWord = /[a-z0-9]/g;
+            let matchKeyWord = /((H|h)(D|d)\s?6(0|5)0)/g;
             for (let item in dataStr.ads) {
                 if (dataStr.ads[item].match(matchKeyWord)) {
                     // send notification
-                    console.log('Huh, caught one');
+                    axios({
+                        url: 'https://hooks.slack.com/services/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',
+                        method: 'POST',
+                        data: {
+                            "channel": "#messages",
+                            "username": "Canuck",
+                            "text": dataStr.ads[item],
+                            "icon_emoji":":headphones:"
+                        }
+                    }).then((data) => {
+                        console.log(data)
+                    }).catch((err) => {
+                        console.log(err)
+                    })
                 }
             }
         }
