@@ -63,15 +63,8 @@ const crawler = {
                         });
                     }
                 }
-                // Object.keys(dataObj.title).forEach((key) => {
-                //     if(dataObj.title[key] && dataObj.title[key].match(/(SQL)|(sql)/g)) {
-                //         console.log('huh, caught one')
-                //     }
-                // });
-                // console.log(dataObj);
                 resolve(dataObj);
             }).catch((err) => {
-                // console.log(err);
                 reject(err);
             });
         });
