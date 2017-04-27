@@ -16,7 +16,7 @@ slack 是一个新兴的事实通讯工具，前端使用的是React，桌面版
 
 下边看一个关键字 (matchKeyWord) 为 jbl 的结果：
 
-![slack_notification](.\readme_pics/slack_notification.png)
+![slack_notification](./readme_pics/slack_notification.png)
 
 ![slack_main](./readme_pics/slack_main.png)
 
