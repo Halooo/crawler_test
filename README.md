@@ -6,7 +6,7 @@ slack 是一个新兴的事实通讯工具，前端使用的是React，桌面版
 
 代码如下：
 
-![code](.\readme_pics\code.png)
+![code](./readme_pics/code.png)
 
 爬虫的主要逻辑在 crawler.fetchData() 这个函数里。过程就是简单的请求页面（这里用的是 axios），然后 cheerio 解析 html 字符串。获取到表格信息后进行简单的字符串处理，最终返回一个 Object 包含我们需要的信息。
 
@@ -16,8 +16,8 @@ slack 是一个新兴的事实通讯工具，前端使用的是React，桌面版
 
 下边看一个关键字 (matchKeyWord) 为 jbl 的结果：
 
-![slack_notification](.\readme_pics\slack_notification.png)
+![slack_notification](.\readme_pics/slack_notification.png)
 
-![slack_main](.\readme_pics\slack_main.png)
+![slack_main](./readme_pics/slack_main.png)
 
 运行成功，接下来我就可以根据需求登录官网找到卖家进行交易了 /斜眼笑
