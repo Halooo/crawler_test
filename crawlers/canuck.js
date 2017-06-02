@@ -63,15 +63,8 @@ const crawler = {
                         });
                     }
                 }
-                // Object.keys(dataObj.title).forEach((key) => {
-                //     if(dataObj.title[key] && dataObj.title[key].match(/(SQL)|(sql)/g)) {
-                //         console.log('huh, caught one')
-                //     }
-                // });
-                // console.log(dataObj);
                 resolve(dataObj);
             }).catch((err) => {
-                // console.log(err);
                 reject(err);
             });
         });
@@ -91,11 +84,12 @@ setInterval(function() {
 
         if (latestDataStr.ads && dataStr.ads && (latestDataArr.indexOf(dataStr.ads[0]) === -1)) {
             let matchKeyWord = /((H|h)(D|d)\s?6(0|5)0)/g;
+            // let matchKeyWord = /jbl/g;
             for (let item in dataStr.ads) {
                 if (dataStr.ads[item].match(matchKeyWord)) {
                     // send notification
                     axios({
-                        url: 'https://hooks.slack.com/services/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',
+                        url: 'https://hooks.slack.com/services/your-slack-url',
                         method: 'POST',
                         data: {
                             "channel": "#messages",
@@ -108,6 +102,7 @@ setInterval(function() {
                     }).catch((err) => {
                         console.log(err)
                     })
+                    console.log(dataStr.ads[item])
                 }
             }
         }
