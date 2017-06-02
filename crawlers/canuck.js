@@ -29,9 +29,9 @@ const crawler = {
     _trimData: function (titleInfo) {
         const p = new Promise(function (resolve, reject) {
             let result = titleInfo.map((item, index) => {
-                item = item.trim();
-                return item;
-            });
+                    item = item.trim();
+            return item;
+        });
             resolve(result);
         });
         return p;
@@ -45,28 +45,35 @@ const crawler = {
                 method: 'GET',
             }).then((data) => {
                 const $ = cheerio.load(data.data);
-                let items = $('.adverttable .ad');
-                let dataObj = {
-                    ads: {}
-                };
-                let keyindex = 0;
-                for (let i = 0; i < items.length; i++) {
-                    let titleInfo = items.eq(i).text().replace(/\t+/gm,'')
-                        .replace(/\n+/gm, '-').replace(/(^-)|(\s-$)/, '')
-                        .replace(/.*((DEALER AD)|(WANTED)).*/gm, '').split('-');
+            let items = $('.adverttable .ad');
+            let dataObj = {
+                ads: {}
+            };
+            let keyindex = 0;
+            for (let i = 0; i < items.length; i++) {
+                let titleInfo = items.eq(i).text().replace(/\t+/gm,'')
+                    .replace(/\n+/gm, '-').replace(/(^-)|(\s-$)/, '')
+                    .replace(/.*((DEALER AD)|(WANTED)).*/gm, '').split('-');
 
-                    if (titleInfo.length > 1) {
-                        titleInfo.shift();
-                        _this._trimData(titleInfo).then(function(data) {
-                            dataObj.ads[keyindex] = data.filter(function(item) {return item !== ''});
-                            keyindex++;
-                        });
-                    }
+                if (titleInfo.length > 1) {
+                    titleInfo.shift();
+                    _this._trimData(titleInfo).then(function(data) {
+                        dataObj.ads[keyindex] = data.filter(function(item) {return item !== ''});
+                        keyindex++;
+                    });
                 }
-                resolve(dataObj);
-            }).catch((err) => {
+            }
+            // Object.keys(dataObj.title).forEach((key) => {
+            //     if(dataObj.title[key] && dataObj.title[key].match(/(SQL)|(sql)/g)) {
+            //         console.log('huh, caught one')
+            //     }
+            // });
+            // console.log(dataObj);
+            resolve(dataObj);
+        }).catch((err) => {
+                // console.log(err);
                 reject(err);
-            });
+        });
         });
         return p;
     }
@@ -83,32 +90,43 @@ setInterval(function() {
 
 
         if (latestDataStr.ads && dataStr.ads && (latestDataArr.indexOf(dataStr.ads[0]) === -1)) {
-            let matchKeyWord = /((H|h)(D|d)\s?6(0|5)0)/g;
-            // let matchKeyWord = /jbl/g;
-            for (let item in dataStr.ads) {
-                if (dataStr.ads[item].match(matchKeyWord)) {
-                    // send notification
-                    axios({
-                        url: 'https://hooks.slack.com/services/your-slack-url',
-                        method: 'POST',
-                        data: {
-                            "channel": "#messages",
-                            "username": "Canuck",
-                            "text": dataStr.ads[item],
-                            "icon_emoji":":headphones:"
-                        }
-                    }).then((data) => {
-                        console.log(data)
-                    }).catch((err) => {
-                        console.log(err)
-                    })
-                    console.log(dataStr.ads[item])
+            let adReported = false;
+            latestDataArr.map((item) => {
+                for (let ad in dataStr.ads) {
+                    if (item == ad) {
+                        adReported = true;
+                    }
+                }
+            });
+            console.log(adReported);
+            if (!adReported) {
+                let matchKeyWord = /((H|h)(D|d)\s?6(0|5)0)/g;
+                // let matchKeyWord = /Monster/g;
+                for (let item in dataStr.ads) {
+                    if (dataStr.ads[item].match(matchKeyWord)) {
+                        // send notification
+                        axios({
+                            url: 'https://hooks.slack.com/services/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',
+                            method: 'POST',
+                            data: {
+                                "channel": "#messages",
+                                "username": "Canuck",
+                                "text": dataStr.ads[item],
+                                "icon_emoji":":headphones:"
+                            }
+                        }).then((data) => {
+                            // console.log(data)
+                        }).catch((err) => {
+                            console.log(err)
+                        })
+                    }
                 }
             }
+
         }
         console.log('finish')
         latestData = currData;
     }).catch(function (err) {
         console.error(err);
     });
-}, 1000*60*2);
+}, 1000*2);
