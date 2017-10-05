@@ -3,6 +3,7 @@
  */
 const axios = require('axios');
 const cheerio = require('cheerio');
+const config = require('./config.json')
 
 let latestData = {ads: {0: ['']}};
 
@@ -101,12 +102,12 @@ setInterval(function() {
             console.log(adReported);
             if (!adReported) {
                 let matchKeyWord = /((H|h)(D|d)\s?6(0|5)0)/g;
-                // let matchKeyWord = /Monster/g;
+                // let matchKeyWord = /DJ1/g;
                 for (let item in dataStr.ads) {
                     if (dataStr.ads[item].match(matchKeyWord)) {
                         // send notification
                         axios({
-                            url: 'https://hooks.slack.com/services/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',
+                            url: config.slack,
                             method: 'POST',
                             data: {
                                 "channel": "#messages",
